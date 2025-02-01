@@ -1,42 +1,38 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>
-		Page Profile
-    </title>
+	<title>Page Profile</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
- <header>
- 	<nav class="bg-gray-800">
-	  <ul class="flex justify-around h-20 items-center text-gray-300 uppercase ">
-		<li>
-		  	<a class="hover:bg-gray-700 rounded-md focus:ring-offset-2 font-medium pt-2 pb-2 pl-2 pr-2" href="#">   
-		  	 inicio 
-			</a>
-		</li>
-		<li>
-			<a class="hover:bg-gray-700 rounded-md focus:ring-offset-2 font-medium pt-2 pb-2 pl-2 pr-2" href="#">
-			 work
-		   </a>
-		</li>
-		<li>
-			<a class="hover:bg-gray-700 rounded-md focus:ring-offset-2 font-medium pt-2 pb-2 pl-2 pr-2" href="#">
-			   about me
-		    </a>
-		</li>
-		<li>
-			<a class="hover:bg-gray-700 rounded-md focus:ring-offset-2 font-medium pt-2 pb-2 pl-2 pr-2" href="#">
-				contact
-			</a>
-		</li>
-	  </ul>
-	</nav>
- </header>
+    {% if menu_movil %}
+       {% include "./menuMovil.html" %}
+	   
+    {% else %}
+	<header>
+ 	  <nav class="bg-gray-800">
+	    {% block slider %}
+	    <!-- Menú para dispositivos grandes -->
+	    <ul class="flex justify-around h-20 items-center text-gray-300 uppercase md:flex md:space-x-4 md:pl-16 md:pr-16">
+	      {% for item in menu_items %}
+		      <li class="cursor-pointer">
+		          <a class="hover:bg-gray-700 rounded-md focus:ring-offset-2 font-medium pt-2 pb-2 pl-2 pr-2" href="#">
+		             {{ item.name }}
+		          </a>
+		      </li>	 
+	      {% endfor %}
+	    </ul>
+	    {% endblock %}
+	  </nav>
+ 	</header>
+    {% endif %}
+
  	<main id="content">
  		{% include "./contact.html" %}
  	</main>
+
 </body>
 </html>

@@ -1,13 +1,13 @@
-
 {% block content %}
    <section class="sm:mx-auto sm:w-full sm:max-w-sm">
     <p class="mt-10 text-center text-2xl/5 font-bold tracking-tight text-gray-900">	
-       Sign in to your account
+       {{ message.Title }}
     </p>
   </section>
 
   <section class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="" method="POST">
+    <form class="space-y-6" method="POST">
+      {% csrf_token %}
       <div>
         <label for="email" class="block text-sm/6 font-medium text-gray-900">
           Email address

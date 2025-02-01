@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.conf.urls.static import static
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,20 @@ SECRET_KEY = 'django-insecure-dojcej-hfb-qklu3bhkpkql6$6v7sf!z!%$!*=o)^v%anf0v3m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+
+ALLOWED_HOSTS = ['127.0.0.1', 'www.myprofile.com']
+
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+   
+]
 
 
 # Application definition
@@ -37,8 +52,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount.providers.google',
     'Views',
 ]
+
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+           'client_id',
+           'email'  
+        ],  
+        'AUTH_PARAMS':{"access_type":"online"} 
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,9 +79,22 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     # Add the account middleware:
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
-ROOT_URLCONF = 'app.urls'
+
+#ROOT_URLCONF = 'googlelogin.urls'
+STATIC_URL = "/asset/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+path_location = Path.home()
+path_location_folder =  path_location / 'Desktop/Page/asset'
+ 
+STATICFILES_DIRS = [
+    # This directory might be missing
+    path_location_folder
+]
 
 TEMPLATES = [
     {
@@ -65,14 +109,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },        
-    },
-
-{
-    "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [
-            "/Router/router.py",
-        ],
-   },     
+    }   
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
@@ -129,3 +166,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.accounts.auth_backends'
+)
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
